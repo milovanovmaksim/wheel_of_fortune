@@ -1,0 +1,11 @@
+bot:
+  group_id: 218035058
+  access_token: vk1.a.dzP0z9lH8vMbRDggaDiCILLJes0XBGo8W_nPpnlIk_MnnK8pcQvxyzhlw6o0hIqoPDlklBSz7eNGQPA8WXEzjkHuJW9e3eO0_Gy8A25crSM9e2qhg183gh4wJEqZzBSvTRlfVb9v-NuLlpAMQVp8J10BIUTbul_DQW26Nf3KMQHf2IrtmadwE4nDSz0ks24XnuoJPDusM7i6OypYajiGUA
+rabbit:
+  url: "amqp://guest:guest@127.0.0.1:5672/"
+database:
+  host: 0.0.0.0
+  port: 5432
+  user: maxim
+  password: canada
+  database: wheel_of_fortune
