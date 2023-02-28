@@ -12,4 +12,7 @@ then
 elif [ $1 == admin ]
 then
 	python ./admin_api/main.py
+elif [ $1 == test ]
+then
+	pytest -v
 fi
