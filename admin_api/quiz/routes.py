@@ -1,6 +1,6 @@
 import typing
 
-from app.quiz.views import (
+from admin_api.quiz.views import (
     ThemeAddView,
     ThemeListView,
     QuestionAddView,
@@ -8,7 +8,7 @@ from app.quiz.views import (
 )
 
 if typing.TYPE_CHECKING:
-    from app.web.app import Application
+    from admin_api.web.app import Application
 
 
 def setup_routes(app: "Application"):

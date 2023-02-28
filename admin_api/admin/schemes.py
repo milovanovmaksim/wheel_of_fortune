@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
-from app.web.schemes import OkResponseSchema
+from admin_api.web.schemes import OkResponseSchema
 
 
 class AdminLoginRequestSchema(Schema):

@@ -52,14 +52,14 @@ class QuizAccessor:
     async def get_question_by_title(self, title: str) -> Optional[QuestionModel]:
         query: Select = (select(QuestionModel)
                          .where(QuestionModel.title == title)
-                         .options(joinedload(QuestionModel.answers)))
+                         .options(joinedload(QuestionModel.answer)))
         question: Optional[QuestionModel] = await self._get_one_object(query, QuestionModel)
         return question
 
     async def get_question_by_id(self, _id: int) -> Optional[QuestionModel]:
         query: Select = (select(QuestionModel)
                          .where(QuestionModel.id == _id)
-                         .options(joinedload(QuestionModel.answers)))
+                         .options(joinedload(QuestionModel.answer)))
         question: Optional[QuestionModel] = await self._get_one_object(query, QuestionModel)
         return question
 
@@ -80,10 +80,12 @@ class QuizAccessor:
         if theme_id:
             query: Select = (select(QuestionModel)
                              .where(QuestionModel.theme_id == theme_id)
-                             .options(joinedload(QuestionModel.answers)))
+                             .options(joinedload(QuestionModel.answer))
+                             .options(joinedload(QuestionModel.theme)))
         else:
             query: Select = (select(QuestionModel)
-                             .options(joinedload(QuestionModel.answers)))
+                             .options(joinedload(QuestionModel.answer))
+                             .options(joinedload(QuestionModel.theme)))
         async with self.database.session() as session:
             result: Result = await session.execute(query)
         questions_model: List[QuestionModel] = result.unique().scalars().all()

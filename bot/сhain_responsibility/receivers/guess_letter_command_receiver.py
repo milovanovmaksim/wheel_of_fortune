@@ -11,7 +11,6 @@ from vk_api.dcs import Message
 if TYPE_CHECKING:
     from bot.state.state import State
     from store.quiz.models import QuestionModel
-    from store.quiz.models import ThemeModel
     from store.quiz.models import AnswerModel
     from store.game.models import GameModel
     from store.player.models import PlayerModel
@@ -27,7 +26,6 @@ class GuessLetterCommandButtonReceiver(MenuMixins, KeyboardMixin, ButtonReceiver
         self.started_game: Optional["GameModel"] = None
         self.question: Optional["QuestionModel"] = None
         self.score: Optional["Score"] = None
-        self.theme: Optional["ThemeModel"] = None
         self.word: List[Optional[str]] = []
         self.correct_answer_score: int = 0
 
@@ -45,7 +43,6 @@ class GuessLetterCommandButtonReceiver(MenuMixins, KeyboardMixin, ButtonReceiver
             self.message = "Не Ваша очередь"
             return await self.send_message(self.update.from_id)
         self.question: "QuestionModel" = self.started_game.question
-        self.theme: "ThemeModel" = self.question.theme
         self.letter: str = self.update.text
         self.answer: "AnswerModel" = self.question.answer
         if self.started_game:

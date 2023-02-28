@@ -8,7 +8,7 @@ from sqlalchemy import (
     String,
 )
 
-from app.store.database.sqlalchemy_base import db
+from store.database.sqlalchemy_base import db
 
 
 @dataclass

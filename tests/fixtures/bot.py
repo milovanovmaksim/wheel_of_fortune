@@ -21,9 +21,9 @@ if TYPE_CHECKING:
 async def clear_db(worker: "Worker", stop_worker):
     yield
     try:
-        session = AsyncSession(worker.state.database._engine)
+        session = AsyncSession(worker.state.store.database._engine)
         connection = await session.connection()
-        for table in worker.state.database._db.metadata.sorted_tables:
+        for table in worker.state.store.database._db.metadata.sorted_tables:
             if table.name != "association_table":
                 await session.execute(text(f"TRUNCATE {table.name} CASCADE"))
                 await session.execute(text(f"ALTER SEQUENCE {table.name}_id_seq RESTART WITH 1"))

@@ -5,10 +5,10 @@ from aiohttp.web_exceptions import HTTPUnprocessableEntity, HTTPException
 from aiohttp.web_middlewares import middleware
 from aiohttp_apispec import validation_middleware
 
-from app.web.utils import error_json_response
+from admin_api.web.utils import error_json_response
 
 if typing.TYPE_CHECKING:
-    from app.web.app import Application, Request
+    from admin_api.web.app import Application, Request
 
 HTTP_ERROR_CODES = {
     400: "bad_request",

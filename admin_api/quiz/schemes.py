@@ -1,10 +1,8 @@
 from typing import Dict, List, Optional
 
 from marshmallow import Schema, fields
-from marshmallow.validate import Length
-from marshmallow.exceptions import ValidationError
 
-from app.web.schemes import OkResponseSchema
+from admin_api.web.schemes import OkResponseSchema
 
 
 class ThemeSchema(Schema):
@@ -19,22 +17,11 @@ class ResponseThemeSchema(OkResponseSchema):
     data = fields.Nested(ThemeSchema)
 
 
-def validate_unity_the_correct_answer(value):
-    correct_answers: List[Optional[Dict[str, str]]] = [answer for answer in value
-                                                       if answer.get("is_correct")]
-    if len(correct_answers) != 1:
-        raise ValidationError(message="The question must has only one correct answer",
-                              field_name="answers")
-    return value
-
-
 class QuestionSchema(Schema):
     id = fields.Int(required=False, dump_only=True)
     title = fields.Str(required=True)
     theme_id = fields.Int(required=True)
-    answers = fields.Nested("AnswerSchema",
-                            validate=[Length(min=2), validate_unity_the_correct_answer],
-                            many=True)
+    answer = fields.Nested("AnswerSchema")
 
     class Meta:
         ordered = True
@@ -45,11 +32,8 @@ class ResponseQuestionSchema(OkResponseSchema):
 
 
 class AnswerSchema(Schema):
+    id = fields.Int(required=False, dump_only=True)
     title = fields.Str(required=True)
-    is_correct = fields.Bool(required=True)
-
-    class Meta:
-        ordered = True
 
 
 class ThemeListSchema(Schema):

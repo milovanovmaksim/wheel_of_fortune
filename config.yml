@@ -9,3 +9,8 @@ database:
   user: maxim
   password: canada
   database: wheel_of_fortune
+admin:
+  email: admin@admin.com
+  password: admin
+session:
+  key: CaY5iCkYtN7DqXdiYK1BvmGrQuaSA4Tl4bEk9my0jc0=

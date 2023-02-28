@@ -4,30 +4,30 @@ from asyncio import gather
 from aiohttp_apispec import docs, request_schema, response_schema, querystring_schema
 from aiohttp.web_exceptions import HTTPConflict, HTTPNotFound
 
-from app.quiz.models import Answer, Question, Theme
-from app.quiz.schemes import (
+from store.quiz.models import Answer, Question, Theme
+from admin_api.quiz.schemes import (
     ThemeSchema, ResponseThemeSchema, ThemeListResponseSchema,
     QuestionSchema, ResponseQuestionSchema, ListQuestionResponseSchema, ThemeIdSchema
 )
 
-from app.web.app import View
-from app.web.utils import json_response
-from app.web.mixins import AuthRequiredMixin
+from admin_api.web.app import View
+from admin_api.web.utils import json_response
+from admin_api.web.mixins import AuthRequiredMixin
 
 if TYPE_CHECKING:
-    from app.store.quiz.accessor import QuizAccessor
+    from store.quiz.accessor import QuizAccessor
 
 
-class ThemeAddView(AuthRequiredMixin, View):
+class ThemeAddView(View):
     @docs(tags=["quiz"], summary="Add a new theme")
     @request_schema(ThemeSchema)
     @response_schema(ResponseThemeSchema, 200)
     async def post(self):
         title = self.data["title"]
-        theme = await self.store.quizzes.get_theme_by_title(title=title)
+        theme = await self.store.quize_accessor.get_theme_by_title(title=title)
         if theme:
             raise HTTPConflict(reason=f"Theme with this title ({title}) already exists")
-        theme = await self.store.quizzes.create_theme(title=title)
+        theme = await self.store.quize_accessor.create_theme(title=title)
         return json_response(data={"data": theme}, schema=ResponseThemeSchema)
 
 
@@ -35,7 +35,7 @@ class ThemeListView(AuthRequiredMixin, View):
     @docs(tags=["quiz"], summary="List themes")
     @response_schema(ThemeListResponseSchema, 200)
     async def get(self):
-        themes = await self.store.quizzes.list_themes()
+        themes = await self.store.quize_accessor.list_themes()
         data = {
             "data": {
                 "themes": themes
@@ -44,7 +44,7 @@ class ThemeListView(AuthRequiredMixin, View):
         return json_response(data=data, schema=ThemeListResponseSchema)
 
 
-class QuestionAddView(AuthRequiredMixin, View):
+class QuestionAddView(View):
     @docs(tags=["quiz"], summary="Add a new question")
     @request_schema(QuestionSchema)
     @response_schema(ResponseQuestionSchema, 200)
@@ -81,7 +81,7 @@ class QuestionListView(AuthRequiredMixin, View):
     @response_schema(ListQuestionResponseSchema, 200)
     async def get(self):
         theme_id = self.query.get("theme_id")
-        quiz_accessor: "QuizAccessor" = self.store.quizzes
+        quiz_accessor: "QuizAccessor" = self.store.quize_accessor
         questions = await quiz_accessor.list_questions(theme_id=theme_id)
         data = {
             "data": {

@@ -191,10 +191,6 @@ class GuessWordReceiver(MenuMixins, KeyboardMixin, ButtonReceiverAbstract):
             if player.vk_id == vk_id:
                 return player
 
-    def player_in_queue(self):
-        if self.update.from_id != self.who_next[0]:
-            self.message = "Не Ваша очередь"
-
     async def send_winner_messages(self):
         player = self.get_player(self.update.from_id)
         text = f"Победу одержал(а): {player.first_name} {player.last_name}\n Ответ: {self.answer.title}"

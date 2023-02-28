@@ -45,7 +45,6 @@ class VkApi:
         async with self.session.post(url, **kwargs) as response:
             json_data = await response.json()
             data = {"user_id": message.user_id, "text": message.message, "response": json_data}
-            print(data)
             return data
 
     async def get_user(self, id_: int) -> Optional[User]:

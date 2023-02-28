@@ -5,7 +5,7 @@ from aiohttp_session import Session, get_session
 
 if typing.TYPE_CHECKING:
     from aiohttp.abc import StreamResponse
-    from app.store.admin.accessor import AdminAccessor
+    from store.admin.accessor import AdminAccessor
 
 
 class AuthRequiredMixin:
@@ -14,7 +14,7 @@ class AuthRequiredMixin:
         email = session.get("admin")
         if self.request.cookies.get("sessionid") and email is None:
             raise HTTPForbidden
-        admin_accessor: "AdminAccessor" = self.request.app.store.admins
+        admin_accessor: "AdminAccessor" = self.request.app.store.admin_accessor
         admin = await admin_accessor.get_by_email(email)
         if admin:
             self.request.admin = admin

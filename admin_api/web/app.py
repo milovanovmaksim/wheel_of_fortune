@@ -8,13 +8,14 @@ from aiohttp_apispec import setup_aiohttp_apispec
 from aiohttp_session import setup as setup_aiohttp_session
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
 
-from app.admin.models import Admin
-from app.store import setup_store, Store
-from app.store.database.database import Database
-from app.web.config import Config, setup_config
-from app.web.logger import setup_logging
-from app.web.middlewares import setup_middlewares
-from app.web.routes import setup_routes
+
+from admin_api.store.store import setup_store, Store
+from admin_api.web.config import Config, setup_config
+from admin_api.web.logger import setup_logging
+from admin_api.web.middlewares import setup_middlewares
+from admin_api.web.routes import setup_routes
+from store.database.database import Database
+from store.admin.models import Admin
 
 
 class Application(AiohttpApplication):

@@ -30,13 +30,13 @@ class Worker:
     async def start(self):
         print("Worker is starting...")
         await self._init_broker()
-        await self.state.init()
+        await self.state.store.connect()
         print("Worker started")
 
     async def stop(self):
         await self.queue.cancel("_worker")
         await asyncio.gather(*self.tasks, return_exceptions=True)
-        await self.state.database.disconnect()
+        await self.state.store.disconnect()
         await self.broker.stop()
 
     async def _init_broker(self):
@@ -60,8 +60,6 @@ class Worker:
         await self.handle_update(update)
 
     async def handle_update(self, update: Update):
-        print(update)
         receiver: Optional["R"] = self.handler_manager.handle(update, self.state)
         if receiver:
             await receiver.run()
-

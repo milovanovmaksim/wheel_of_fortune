@@ -70,7 +70,7 @@ class Poller:
         url = f"{self.server}?act=a_check&key={self.key}&ts={self.ts}&wait=25"
         async with self.session.post(url) as response:
             json_data = await response.json()
-            print(json_data)
+            #print(json_data)
         if "failed" in json_data:
             await self._get_long_poll_service()
         else:

@@ -4,11 +4,11 @@ from aiohttp.web_exceptions import HTTPForbidden
 from aiohttp_apispec import docs, request_schema, response_schema
 from aiohttp_session import new_session, Session
 
-from app.web.app import View
-from app.admin.models import Admin
-from app.web.utils import json_response
-from app.admin.schemes import AdminResponseSchema, AdminLoginRequestSchema
-from app.web.mixins import AuthRequiredMixin
+from admin_api.web.app import View
+from store.admin.models import Admin
+from admin_api.web.utils import json_response
+from admin_api.admin.schemes import AdminResponseSchema, AdminLoginRequestSchema
+from admin_api.web.mixins import AuthRequiredMixin
 
 
 class AdminLoginView(View):
@@ -18,9 +18,8 @@ class AdminLoginView(View):
     async def post(self):
         email = self.data["email"]
         password = self.data["password"]
-        admin_accessor = self.store.admins
+        admin_accessor = self.store.admin_accessor
         admin: Optional[Admin] = await admin_accessor.get_by_email(email)
-        print(admin)
         if admin:
             if admin.check_password(password):
                 await self.set_new_session()

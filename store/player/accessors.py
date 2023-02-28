@@ -15,7 +15,6 @@ if TYPE_CHECKING:
     from store.database.database import Database
 
 
-
 @dataclass
 class PlayerAccessors:
     database: "Database"
@@ -35,7 +34,6 @@ class PlayerAccessors:
     async def get_user(self, state: "State", update: "Update") -> Optional["User"]:
         async with VkApi(state.config.vk_api_config) as vk:
             user = await vk.get_user(update.from_id)
-            print(user)
             return user
 
     async def get_player_by_vk_id(self, from_id: int) -> PlayerModel:

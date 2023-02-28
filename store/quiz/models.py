@@ -61,6 +61,5 @@ class AnswerModel(db):
     __tablename__ = "answers"
     id = Column(Integer(), primary_key=True)
     title = Column(String(64), index=True, nullable=False)
-    is_correct = Column(BOOLEAN, default=False)
     question_id = Column(Integer, ForeignKey("questions.id", ondelete="CASCADE"), nullable=False, index=True)
     question = relationship("QuestionModel", back_populates="answer", uselist=False)

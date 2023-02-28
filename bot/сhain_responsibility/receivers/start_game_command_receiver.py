@@ -31,7 +31,7 @@ class StartGameCommandButtonReceiver(ButtonReceiverAbstract):
             \nВопрос: {question.title}\
             \nСлово из {lenth} букв\
             \nСлово: {answer}\
-            \n Чтобы назвать все слово сразу отправьте сообщение"
+            \nЧтобы назвать все слово отправьте сообщение"
 
     async def execute(self):
         games: List[Optional["GameModel"]] = await self.game_accessor.get_created_and_started_game_by_player(self.update)
