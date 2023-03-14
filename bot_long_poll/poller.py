@@ -63,14 +63,14 @@ class Poller:
     async def poll(self):
         while self.is_running:
             updates = await self.get_updates()
-            if updates:
-                await self.poller_client.put(updates)
+            for update in updates:
+                await self.poller_client.put(update)
 
     async def get_updates(self) -> List[Optional[Update]]:
         url = f"{self.server}?act=a_check&key={self.key}&ts={self.ts}&wait=25"
         async with self.session.post(url) as response:
             json_data = await response.json()
-            #print(json_data)
+
         if "failed" in json_data:
             await self._get_long_poll_service()
         else:

@@ -64,7 +64,7 @@ class Update:
     @property
     def from_id(self):
         return self.object.message.from_id
-    
+
     @property
     def text(self):
         return self.object.message.text

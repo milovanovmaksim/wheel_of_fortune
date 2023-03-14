@@ -1,14 +1,10 @@
 from dataclasses import dataclass, field
-from typing import Optional, List, TYPE_CHECKING
-import asyncio
+from typing import Optional
 
 from aio_pika import Exchange, Message
 
 from broker.broker import Broker
-
-
-if TYPE_CHECKING:
-    from bot_long_poll.dcs import Update
+from bot_long_poll.dcs import Update
 
 
 @dataclass
@@ -29,9 +25,6 @@ class PollerClient:
     async def _init_queues(self):
         await self.broker.declare_queue(self.inbound_queue)
 
-    async def put(self, updates: List[Optional["Update"]]):
-        messages = [update.Schema().dumps(update).encode() for update in updates]
-        tasks: List[asyncio.Task] = ([self.exchange
-                                      .publish(Message(body=message), routing_key=self.inbound_queue)
-                                      for message in messages])
-        await asyncio.gather(*tasks)
+    async def put(self, update: "Update"):
+        message = Update.Schema().dumps(update).encode()
+        await self.exchange.publish(Message(body=message), routing_key=self.inbound_queue)
