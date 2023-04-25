@@ -26,14 +26,14 @@ class VkApi:
         await self.session.close()
 
     @property
-    def params(self):
+    def params(self) -> Dict[str, str]:
         return {
             "access_token": self.vk_api_config.access_token,
             "group_id": self.vk_api_config.group_id
         }
 
     async def send_message(self, message: "Message") -> Dict[str, Any]:
-        params = {
+        params: Dict[str, Any] = {
             "user_id": message.user_id,
             "random_id": randint(0, maxsize)
         }
@@ -60,7 +60,8 @@ class VkApi:
             json_data = await response.json()
         if json_data.get("response"):
             data: Dict[str, Any] = json_data.get("response")[0]
-            first_name: str = data.get("first_name")
-            last_name: str = data.get("last_name")
-            user = User(first_name, last_name)
+            first_name: Optional[str] = data.get("first_name")
+            last_name: Optional[str] = data.get("last_name")
+            if first_name and last_name:
+                user = User(first_name, last_name)
         return user
